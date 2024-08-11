@@ -131,9 +131,11 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SP_PR5.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="wndProcFuncs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SP_PR5.cpp" />
+    <ClCompile Include="wndProcFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SP_PR5.rc" />
