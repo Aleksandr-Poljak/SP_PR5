@@ -13,4 +13,14 @@ extern MSG msg;
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
+/// <summary>
+/// ѕроцедура диалога New Dialog.
+/// </summary>
+/// <param name="hwndDlg">дескриптор диалогового окна</param>
+/// <param name="msg">код сообщени€</param>
+/// <param name="wParam">первый параметр сообщени€</param>
+/// <param name="lParam">второй параметр сообщени€</param>
+/// <returns></returns>
+INT_PTR CALLBACK newDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+
 #endif // SP_PR5_H

@@ -134,6 +134,7 @@
     <ClInclude Include="wndProcFuncs.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dlgFuncs.cpp" />
     <ClCompile Include="SP_PR5.cpp" />
     <ClCompile Include="wndProcFuncs.cpp" />
   </ItemGroup>

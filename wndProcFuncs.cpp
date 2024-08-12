@@ -1,5 +1,5 @@
-#include "wndProcFuncs.h"
 #include "resource.h"
+#include "wndProcFuncs.h"
 #include "SP_PR5.h"
 
 void wndProc_OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct) 
@@ -24,6 +24,15 @@ void wndProc_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 
     switch (id)
     {
+    case IDM_HELP_NEWDLG:
+    {
+        INT_PTR ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_NEW_DIALOG), hwnd, newDialogProc);
+        wchar_t result[200] = L"\0";
+        if (ret == IDOK) wsprintf(result, L"Нажата кнопка ОК");
+        if (ret == IDCANCEL) wsprintf(result, L"Нажата кнопка Отмена");
+        MessageBox(hwnd, result, TEXT(""), MB_OK);
+        break;
+    }
     case IDM_FILE_EXIT:
         MessageBox(hwnd, TEXT("Выбрана команда \"Exit\tAlt+x\""), TEXT("Выход"), MB_OK);
         DestroyWindow(hwnd);
@@ -35,8 +44,7 @@ void wndProc_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         MessageBox(hwnd, TEXT("Выбрана команда \"Элементы управления\""), TEXT("ТЕКСТ"), MB_OK);
         break;
     case IDM_ABOUT:
-        MessageBox(hwnd, TEXT("Выбрана команда \"About\""),TEXT("IDM_ABOUT"), MB_OK);
-        DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hwnd, About);
+        SendMessage(hwnd, WM_COMMAND, IDM_HELP_NEWDLG, 0);
         break;
     case IDM_EXIT:
         DestroyWindow(hwnd);
