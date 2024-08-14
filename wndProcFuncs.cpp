@@ -16,6 +16,18 @@ void wndProc_OnPaint(HWND hwnd)
 {
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(hwnd, &ps);
+
+    int y = 50;
+    int lineSpacing = 20;
+    SetTextColor(hdc, RGB(0, 0, 0));
+    SetBkColor(hdc, RGB(255, 255, 255)); 
+
+    for (const auto& line : g_lines)
+    {
+        TextOut(hdc, 50, y, line.c_str(), static_cast<int>(line.length()));
+        y += lineSpacing;
+    }
+
     EndPaint(hwnd, &ps);
 }
 
@@ -33,15 +45,17 @@ void wndProc_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         MessageBox(hwnd, result, TEXT(""), MB_OK);
         break;
     }
+    case IDM_VIEW_CTL:
+    {
+        INT_PTR ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG_ELEMENT_CONTROL), hwnd, elementControlDialogProc);
+        break;
+    }
     case IDM_FILE_EXIT:
         MessageBox(hwnd, TEXT("Выбрана команда \"Exit\tAlt+x\""), TEXT("Выход"), MB_OK);
         DestroyWindow(hwnd);
         break;
     case IDM_VIEW_TEXT:
         MessageBox(hwnd, TEXT("Выбрана команда \"ТЕКСТ\""), TEXT("ТЕКСТ"), MB_OK);
-        break;
-    case IDM_VIEW_CTL:
-        MessageBox(hwnd, TEXT("Выбрана команда \"Элементы управления\""), TEXT("ТЕКСТ"), MB_OK);
         break;
     case IDM_ABOUT:
         SendMessage(hwnd, WM_COMMAND, IDM_HELP_NEWDLG, 0);

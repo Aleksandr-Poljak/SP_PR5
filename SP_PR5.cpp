@@ -3,11 +3,14 @@
 #include "Windows.h"
 #include "Windowsx.h"
 #include "wndProcFuncs.h"
+#include <string>
+#include <vector>
 
 // Глобальные переменные:
 HINSTANCE hInst;                                // текущий экземпляр
 WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса главного окна
+std::vector<std::wstring> g_lines;
 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -96,6 +99,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         HANDLE_MSG(hWnd, WM_COMMAND, wndProc_OnCommand);
         HANDLE_MSG(hWnd, WM_PAINT, wndProc_OnPaint);
         HANDLE_MSG(hWnd, WM_DESTROY, wndProc_OnDestroy);
+
+    case WM_USER_UPDATE_TEXT:
+    {
+        std::vector<std::wstring>* lines = reinterpret_cast<std::vector<std::wstring>*>(wParam);
+        if (lines)
+        {
+            g_lines = *lines;
+            InvalidateRect(hWnd, nullptr, TRUE);
+        }
+        break;
+    }
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

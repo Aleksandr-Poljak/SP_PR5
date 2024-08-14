@@ -2,6 +2,8 @@
 #define SP_PR5_H
 
 #include "resource.h"
+#include <vector>
+#include <string>
 
 #define MAX_LOADSTRING 100
 
@@ -10,6 +12,7 @@ extern HINSTANCE hInst;                                // текущий экземпляр
 extern WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
 extern WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса главного окна
 extern MSG msg;
+extern std::vector<std::wstring> g_lines;              // Хранения вектора строк
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -22,5 +25,11 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 /// <param name="lParam">второй параметр сообщения</param>
 /// <returns></returns>
 INT_PTR CALLBACK newDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+
+/// <summary>
+/// Процедура диалога Элементы управления.
+/// Позволяет вводить и сохранять текст.
+/// </summary>
+INT_PTR CALLBACK elementControlDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 
 #endif // SP_PR5_H
