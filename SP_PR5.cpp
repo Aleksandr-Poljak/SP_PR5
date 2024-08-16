@@ -10,7 +10,10 @@
 HINSTANCE hInst;                                // текущий экземпляр
 WCHAR szTitle[MAX_LOADSTRING];                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса главного окна
-std::vector<std::wstring> g_lines;
+std::vector<std::wstring> g_lines;              // Вектор для хранения строк.
+// Инициализация буфера для диалога Текст.
+char InitialBuffer[MAX_BYTES] = "Шаг 1. Начало работы";
+char Buffer[MAX_BYTES];
 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);

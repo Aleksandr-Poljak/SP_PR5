@@ -50,12 +50,14 @@ void wndProc_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
         INT_PTR ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG_ELEMENT_CONTROL), hwnd, elementControlDialogProc);
         break;
     }
+    case IDM_VIEW_TEXT:
+    {
+        INT_PTR ret = DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG_TEXT), hwnd, viewTextDalogProc);
+        break;
+    }     
     case IDM_FILE_EXIT:
         MessageBox(hwnd, TEXT("Выбрана команда \"Exit\tAlt+x\""), TEXT("Выход"), MB_OK);
         DestroyWindow(hwnd);
-        break;
-    case IDM_VIEW_TEXT:
-        MessageBox(hwnd, TEXT("Выбрана команда \"ТЕКСТ\""), TEXT("ТЕКСТ"), MB_OK);
         break;
     case IDM_ABOUT:
         SendMessage(hwnd, WM_COMMAND, IDM_HELP_NEWDLG, 0);

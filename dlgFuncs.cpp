@@ -4,6 +4,7 @@
 #include <tchar.h>
 #include <string>
 #include <vector>
+#include <windowsx.h>
 
 INT_PTR CALLBACK newDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -118,3 +119,76 @@ INT_PTR CALLBACK elementControlDialogProc(HWND hwndDlg, UINT msg, WPARAM wParam,
 
     return (INT_PTR)FALSE;
 }
+
+INT_PTR viewTextDalogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    HWND hEdit = GetDlgItem(hwndDlg, IDC_EDIT_TEXT);
+    HWND bLoad = GetDlgItem(hwndDlg, IDC_BUTTON_LOAD);
+    DWORD dwNumbOfBytes;
+    OPENFILENAME ofn;
+    HANDLE hFile;
+    TCHAR lpszFileSpec[260];
+
+    switch (msg)
+    {
+    case WM_INITDIALOG:
+        strcpy_s(Buffer, sizeof(Buffer), InitialBuffer);
+        SetWindowTextA(hEdit, Buffer);
+        SetFocus(bLoad);
+        return (INT_PTR)TRUE;
+    case WM_COMMAND:
+    {
+        int id = LOWORD(wParam);
+        switch (id)
+        {
+        case IDC_BUTTON_LOAD:
+        {
+            ZeroMemory(&ofn, sizeof(OPENFILENAME));
+            ofn.lStructSize = sizeof(OPENFILENAME);
+            ofn.hwndOwner = hwndDlg;
+            ofn.hInstance = hInst;
+            ofn.lpstrFile = lpszFileSpec;
+            ofn.lpstrFile[0] = '\0';
+            ofn.nMaxFile = sizeof(lpszFileSpec);
+            ofn.lpstrFilter = L"All\0*.*\0Text\0*.TXT\0";
+            ofn.nFilterIndex = 1;
+            ofn.lpstrFileTitle = NULL;
+            ofn.nMaxFileTitle = 0;
+            ofn.lpstrInitialDir = NULL;
+            ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+            if (!GetOpenFileName(&ofn))
+            {
+                MessageBox(hwndDlg, L"Ошибка при открытии выбора файла", L"Error", MB_OK);
+                return 1;
+            }
+
+            hFile = CreateFile(ofn.lpstrFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+            if (hFile == INVALID_HANDLE_VALUE)
+            {
+                MessageBox(hwndDlg, L"Ошибка при открытии  файла", L"Error", MB_OK);
+                return -1;
+            }
+
+            ZeroMemory(Buffer, sizeof(Buffer));
+            ReadFile(hFile, Buffer, sizeof(Buffer) - sizeof(TCHAR), &dwNumbOfBytes, NULL);
+            SetWindowTextA(hEdit, Buffer);
+            CloseHandle(hFile);
+            break;
+        }
+        case IDOK:
+            strcpy_s(Buffer, sizeof(Buffer), InitialBuffer);
+            EndDialog(hwndDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        case IDCANCEL:
+            strcpy_s(Buffer, sizeof(Buffer), InitialBuffer);
+            EndDialog(hwndDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+    }
+    default:
+        break;
+    }
+    return (INT_PTR)FALSE;
+}
+
